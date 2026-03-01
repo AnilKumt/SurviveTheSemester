@@ -1,0 +1,50 @@
+.profile-achievements-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.profile-achievements-list {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+.profile-achievements-list::-webkit-scrollbar {
+    height: 4px;
+}
+
+.profile-achievements-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.profile-achievements-list::-webkit-scrollbar-thumb {
+    background: var(--md-sys-color-outline-variant);
+    border-radius: 4px;
+}
+
+.profile-achievement-badge {
+    min-width: 156px;
+    height: 156px;
+    border: 1px solid var(--md-sys-color-outline-variant);
+    border-radius: var(--md-sys-shape-corner-medium);
+    background-color: var(--md-sys-color-surface-container);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+}
+
+.profile-achievement-image {
+    width: 112px;
+    height: 112px;
+    object-fit: contain;
+    display: block;
+}
+
+.profile-achievement-badge.is-locked {
+    opacity: 0.42;
+    filter: grayscale(1);
+}
