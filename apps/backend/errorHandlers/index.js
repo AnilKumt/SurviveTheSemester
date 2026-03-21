@@ -15,14 +15,16 @@ class NotFoundError extends AppError {
   }
 }
 
-class ValidationError extends AppError{
-    constructor(message = "Validation Error", details = null){
+
+
+class RedisError extends AppError{
+    constructor(message = "Redis Error", details = null){
         super(message, 400, true, details);
     }
 }
 
-class RedisError extends AppError{
-    constructor(message = "Redis Error", details = null){
+class ValidationError extends AppError{
+    constructor(message = "Validation Error", details = null){
         super(message, 400, true, details);
     }
 }
