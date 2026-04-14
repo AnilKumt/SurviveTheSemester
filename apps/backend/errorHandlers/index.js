@@ -9,20 +9,23 @@ class AppError extends Error{
     }
 }
 
+
+
+
+class RedisError extends AppError{
+    constructor(message = "Redis Error", details = null){
+        super(message, 400, true, details);
+    }
+}
+
+
 class NotFoundError extends AppError {
   constructor(message = "Resource not found", details = null) {
     super(message, 404, true, details);
   }
 }
-
 class ValidationError extends AppError{
     constructor(message = "Validation Error", details = null){
-        super(message, 400, true, details);
-    }
-}
-
-class RedisError extends AppError{
-    constructor(message = "Redis Error", details = null){
         super(message, 400, true, details);
     }
 }

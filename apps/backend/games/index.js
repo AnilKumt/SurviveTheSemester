@@ -1,11 +1,12 @@
 import { Server } from "@colyseus/core";
 import { monitor } from "@colyseus/monitor";
-import { fighterGameRoom } from "./campusFighter/rooms/fighterRoom.js";
-import { Puzzle15Room } from "./puzzle15/puzzle15Room.js";
-import { WebSocketTransport } from "@colyseus/ws-transport";
 import { CanonRoom } from './canon/CanonRoom.js';
 import { MathTugRoom } from './mathtug/MathTugRoom.js';
 import { BinarySudokuRoom } from './binarysudoku/BinarySudokuRoom.js';
+
+import { fighterGameRoom } from "./campusFighter/rooms/fighterRoom.js";
+import { Puzzle15Room } from "./puzzle15/puzzle15Room.js";
+import { WebSocketTransport } from "@colyseus/ws-transport";
 
 export default function registerGameServer(app, httpServer) {
 

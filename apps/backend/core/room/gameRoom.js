@@ -7,11 +7,11 @@ export class GameRoom extends Room {
     }
     
     onCreate(options, AdapterClass){
+
+        this.game.init(options);
         this.gameType = options.gameType;
 
         this.game = new AdapterClass();
-
-        this.game.init(options);
 
         this.state(this.game.getState());
 
@@ -27,4 +27,5 @@ export class GameRoom extends Room {
     onLeave(client){
         this.game.onLeave(client);
     }
+    //dhvfjha sdfhgaseyufkjsadhyuqesvfkjashfiqeviygqewvfd
 }
