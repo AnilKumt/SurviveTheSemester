@@ -2,9 +2,10 @@ import { Room } from "@colyseus/core";
 import { CanonState, CanonPlayer } from "./CanonState.js";
 import { recordUnratedGameResult } from "../../services/ratingUpdateService.js";
 
+
+const ALLOWED_THEMES = new Set(["space", "jungle", "desert"]);
 const DEFAULT_TARGET_SCORE = 3;
 const ALLOWED_TARGETS = new Set([3, 5, 10, 15, 20]);
-const ALLOWED_THEMES = new Set(["space", "jungle", "desert"]);
 
 function randomWind() {
   return Number(((Math.random() * 0.6) - 0.3).toFixed(3));

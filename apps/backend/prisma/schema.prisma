@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model images {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  file_id String
+  url     String[]
+
+  // gallery relation
+  user   users?  @relation("UserImages", fields: [userId], references: [id])
+  userId String? @db.ObjectId
+
+  // avatar reverse relation
+  avatarOf users[] @relation("UserAvatar")
+}
+
+model users {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  email        String   @unique
+  passwordHash String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  friendlist String[]   @default([])
+  rating     Int        @default(0)
+  HighScore  Int[]      @default([])
+  streak     Int        @default(0)
+  maxStreak  Int        @default(0)
+  streakActivityDays String[] @default([])
+  currentStreakDays  String[] @default([])
+  bestStreakDays     String[] @default([])
+  interest   String[]   @default([])
+
+  sentRequests     String[]   @default([])
+  receivedRequests String[]   @default([])
+
+  @@index([name])
+
+  avatarId String? @db.ObjectId
+  avatar images? @relation("UserAvatar", fields: [avatarId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  images images[] @relation("UserImages")
+  notifications Notification[]
+  gameWins GameResult[] @relation("GameWins")
+  gameLosses GameResult[] @relation("GameLosses")
+  gameRatings UserGameRating[]
+}
+
+model Notification {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  user      users    @relation(fields: [userId], references: [id])
+  type      String   // e.g., 'request', 'accepted', 'general'
+  message   String
+  senderId  String?  @db.ObjectId
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model GameResult {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  gameType        String   // e.g., 'puzzle15', 'canon', 'binarySudoku'
+  winnerId        String   @db.ObjectId
+  loserId         String   @db.ObjectId
+  winner          users    @relation("GameWins", fields: [winnerId], references: [id])
+  loser           users    @relation("GameLosses", fields: [loserId], references: [id])
+  
+  winnerScore     Int      // Score earned by winner
+  loserScore      Int      // Score earned by loser
+  windScore       Int      // Rating change for winner
+  loserRating     Int      // Rating change for loser
+  
+  metadata        Json     // Game-specific metadata (e.g., moves, time, etc.)
+  createdAt       DateTime @default(now())
+  
+  @@index([gameType])
+  @@index([winnerId])
+  @@index([loserId])
+}
+
+model UserGameRating {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String   @db.ObjectId
+  gameType        String   // e.g., 'puzzle15', 'canon'
+  rating          Int      @default(1200)  // ELO rating
+  wins            Int      @default(0)
+  losses          Int      @default(0)
+  totalGames      Int      @default(0)
+  bestScore       Int      @default(0)
+  user            users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  updatedAt       DateTime @updatedAt
+  
+  @@unique([userId, gameType])
+  @@index([gameType])
+  @@index([rating])
+}
+
+model GameConfig {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  gameType        String   @unique
+  displayName     String
+  weightage       Float    @default(1.0)   // Weightage in overall rating
+  enabled         Boolean  @default(true)
+  difficultyLevel String   @default("medium")  // easy, medium, hard
+  metadata        Json     @default("{}")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
